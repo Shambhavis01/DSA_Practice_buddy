@@ -1,6 +1,11 @@
+import { useState } from "react";
 import ProblemCard from "../components/ProblemCard";
 
 function Problems() {
+  const [search, setSearch] = useState("");
+  const [topic, setTopic] = useState("All Topics");
+  const [difficulty, setDifficulty] = useState("All Difficulty");
+
   const problems = [
     {
       title: "Two Sum",
@@ -40,6 +45,21 @@ function Problems() {
     },
   ];
 
+  const filteredProblems = problems.filter((problem) => {
+    const matchesSearch = problem.title
+      .toLowerCase()
+      .includes(search.toLowerCase());
+
+    const matchesTopic =
+      topic === "All Topics" || problem.topic === topic;
+
+    const matchesDifficulty =
+      difficulty === "All Difficulty" ||
+      problem.difficulty === difficulty;
+
+    return matchesSearch && matchesTopic && matchesDifficulty;
+  });
+
   return (
     <div className="problems-page">
       <h1>DSA Problems 📚</h1>
@@ -52,9 +72,14 @@ function Problems() {
         <input
           type="text"
           placeholder="Search problems..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
         />
 
-        <select>
+        <select
+          value={topic}
+          onChange={(e) => setTopic(e.target.value)}
+        >
           <option>All Topics</option>
           <option>Array</option>
           <option>String</option>
@@ -63,24 +88,33 @@ function Problems() {
           <option>Searching</option>
         </select>
 
-        <select>
+        <select
+          value={difficulty}
+          onChange={(e) => setDifficulty(e.target.value)}
+        >
           <option>All Difficulty</option>
           <option>Easy</option>
           <option>Medium</option>
-          <option>Hard</option>
         </select>
       </div>
 
       <div className="problems-list">
-        {problems.map((problem) => (
-          <ProblemCard
-            key={problem.title}
-            title={problem.title}
-            topic={problem.topic}
-            difficulty={problem.difficulty}
-            description={problem.description}
-          />
-        ))}
+        {filteredProblems.length > 0 ? (
+          filteredProblems.map((problem) => (
+            <ProblemCard
+              key={problem.title}
+              title={problem.title}
+              topic={problem.topic}
+              difficulty={problem.difficulty}
+              description={problem.description}
+            />
+          ))
+        ) : (
+          <div className="no-results">
+            <h3>No problems found 😕</h3>
+            <p>Try changing your search or filters.</p>
+          </div>
+        )}
       </div>
     </div>
   );
