@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function ProblemCard({ title, topic, difficulty, description }) {
   return (
     <div className="problem-card">
@@ -6,6 +8,7 @@ function ProblemCard({ title, topic, difficulty, description }) {
 
         <div className="problem-meta">
           <span>{topic}</span>
+
           <span className={`difficulty ${difficulty.toLowerCase()}`}>
             {difficulty}
           </span>
@@ -14,9 +17,9 @@ function ProblemCard({ title, topic, difficulty, description }) {
         <p>{description}</p>
       </div>
 
-      <button className="solve-btn">
+      <Link to="/solve" className="solve-btn">
         Solve →
-      </button>
+      </Link>
     </div>
   );
 }

@@ -8,6 +8,7 @@ import Problems from "./pages/Problems";
 import DailyChallenge from "./pages/DailyChallenge";
 import Progress from "./pages/Progress";
 import AIMentor from "./pages/AIMentor";
+import SolveProblem from "./pages/SolveProblem";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
               />
               <Route path="/progress" element={<Progress />} />
               <Route path="/ai-mentor" element={<AIMentor />} />
+              <Route path="/solve" element={<SolveProblem />} />
             </Routes>
           </div>
         </main>
