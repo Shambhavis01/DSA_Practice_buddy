@@ -22,13 +22,18 @@ function App() {
           <div className="page-content">
             <Routes>
               <Route path="/" element={<Dashboard />} />
+
               <Route path="/problems" element={<Problems />} />
+
               <Route
                 path="/daily-challenge"
                 element={<DailyChallenge />}
               />
+
               <Route path="/progress" element={<Progress />} />
+
               <Route path="/ai-mentor" element={<AIMentor />} />
+
               <Route path="/solve" element={<SolveProblem />} />
             </Routes>
           </div>

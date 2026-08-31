@@ -32,7 +32,7 @@ function DailyChallenge() {
             return its maximum sum.
           </p>
 
-          <Link to="/solve" className="solve-btn">
+          <Link to="/solve?problem=maximum-subarray" className="solve-btn">
             Start Challenge →
           </Link>
         </div>
