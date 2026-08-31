@@ -16,7 +16,7 @@ const ai = new GoogleGenAI({
 // Test route
 app.get("/", (req, res) => {
   res.json({
-    message: "DSA Practice Buddy API is running 🚀"
+    message: "DSA Practice Buddy API is running 🚀",
   });
 });
 
@@ -24,9 +24,77 @@ app.get("/", (req, res) => {
 app.get("/api/test", (req, res) => {
   res.json({
     success: true,
-    message: "Backend connection is working!"
+    message: "Backend connection is working!",
   });
 });
+
+// Simple fallback responses
+const getFallbackResponse = (message) => {
+  const question = message.toLowerCase();
+
+  if (question.includes("stack")) {
+    return `A Stack is a linear data structure that follows the LIFO principle — Last In, First Out.
+
+Think of a stack of plates. The last plate you put on top is the first one you remove.
+
+Main operations:
+• Push – add an element
+• Pop – remove the top element
+• Peek – view the top element
+
+Example:
+Stack: [10, 20, 30]
+Pop → 30
+
+Most stack operations take O(1) time.`;
+  }
+
+  if (question.includes("queue")) {
+    return `A Queue is a linear data structure that follows FIFO — First In, First Out.
+
+Think of people standing in a line. The person who comes first gets served first.
+
+Main operations:
+• Enqueue – add an element
+• Dequeue – remove the front element
+• Front – view the first element
+
+Most basic queue operations take O(1) time.`;
+  }
+
+  if (question.includes("binary search")) {
+    return `Binary Search is used to find an element in a sorted array.
+
+The basic idea is:
+1. Check the middle element.
+2. If it is the target, we are done.
+3. If the target is smaller, search the left half.
+4. If the target is larger, search the right half.
+
+Because the search space is divided in half each time, its time complexity is O(log n).`;
+  }
+
+  if (question.includes("two sum")) {
+    return `For Two Sum, the goal is to find two numbers whose sum equals the target.
+
+A common approach is to use a Hash Map:
+1. Go through the array.
+2. For each number, calculate target - number.
+3. Check whether that value is already in the map.
+4. If yes, we found the answer.
+
+Time complexity: O(n)
+Space complexity: O(n)`;
+  }
+
+  return `Here's a simple way to think about it:
+
+Start by identifying the data structure or algorithm involved, then break the problem into smaller steps.
+
+For a coding problem, first understand the input and expected output, then think about the approach before writing code.
+
+Try solving it yourself first. If you share the specific problem or your code, I can guide you step by step.`;
+};
 
 // AI Mentor
 app.post("/api/mentor", async (req, res) => {
@@ -35,12 +103,12 @@ app.post("/api/mentor", async (req, res) => {
 
     if (!message || !message.trim()) {
       return res.status(400).json({
-        error: "Message is required"
+        error: "Message is required",
       });
     }
 
     const response = await ai.models.generateContent({
-      model: "gemini-3.7-flash",
+      model: "gemini-2.5-flash-lite",
 
       contents: `You are an expert DSA mentor helping a beginner computer science student.
 
@@ -61,14 +129,14 @@ ${message}`,
     });
 
     res.json({
-      reply: response.text
+      reply: response.text,
     });
-
   } catch (error) {
     console.error("Gemini API Error:", error);
 
-    res.status(500).json({
-      error: "Unable to get a response from AI."
+    // Fallback response if Gemini is temporarily unavailable
+    res.json({
+      reply: getFallbackResponse(req.body.message || ""),
     });
   }
 });
