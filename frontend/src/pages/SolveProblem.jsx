@@ -10,11 +10,58 @@ function SolveProblem() {
   );
 
   const handleRun = () => {
-    alert("Code execution will be connected in the next stage.");
+    alert("Code execution is not available in this version.");
   };
 
   const handleSubmit = () => {
-    alert("Submission system will be connected in the next stage.");
+    const savedProgress = localStorage.getItem("dsaProgress");
+
+    let progress = {
+      solved: 0,
+      attempts: 0,
+      streak: 0,
+      easy: 0,
+      medium: 0,
+      hard: 0,
+    };
+
+    if (savedProgress) {
+      try {
+        progress = JSON.parse(savedProgress);
+      } catch {
+        // Use default progress
+      }
+    }
+
+    progress.solved += 1;
+    progress.attempts += 1;
+    progress.easy += 1;
+
+    localStorage.setItem("dsaProgress", JSON.stringify(progress));
+
+    const savedActivity = localStorage.getItem("dsaActivity");
+
+    let activity = [];
+
+    if (savedActivity) {
+      try {
+        activity = JSON.parse(savedActivity);
+      } catch {
+        activity = [];
+      }
+    }
+
+    activity.unshift({
+      title: "Two Sum",
+      difficulty: "Easy",
+      topic: "Array",
+      solved: true,
+      date: "Today",
+    });
+
+    localStorage.setItem("dsaActivity", JSON.stringify(activity));
+
+    alert("Problem marked as solved! 🎉");
   };
 
   return (
@@ -31,6 +78,7 @@ function SolveProblem() {
       </div>
 
       <div className="solve-layout">
+
         {/* Problem Section */}
 
         <div className="problem-description">
@@ -94,7 +142,7 @@ function SolveProblem() {
             </button>
 
             <button className="submit-btn" onClick={handleSubmit}>
-              ✓ Submit
+              ✓ Mark as Solved
             </button>
           </div>
         </div>
