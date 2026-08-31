@@ -12,6 +12,19 @@ app.get("/", (req, res) => {
     message: "DSA Practice Buddy API is running 🚀"
   });
 });
+app.get("/api/test", (req, res) => {
+  res.json({
+    success: true,
+    message: "Backend connection is working!"
+  });
+});
+app.post("/api/mentor", (req, res) => {
+  const { message } = req.body;
+
+  res.json({
+    reply: `I received your question: "${message}". AI integration will be connected next.`
+  });
+});
 
 const PORT = 5000;
 
