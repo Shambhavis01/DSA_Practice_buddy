@@ -83,7 +83,9 @@ function Progress() {
           <div className="progress-bar">
             <div
               className="progress-fill easy-progress"
-              style={{ width: `${Math.min(progress.easy * 10, 100)}%` }}
+              style={{
+                width: `${Math.min(progress.easy * 10, 100)}%`,
+              }}
             ></div>
           </div>
         </div>
@@ -97,7 +99,9 @@ function Progress() {
           <div className="progress-bar">
             <div
               className="progress-fill medium-progress"
-              style={{ width: `${Math.min(progress.medium * 10, 100)}%` }}
+              style={{
+                width: `${Math.min(progress.medium * 10, 100)}%`,
+              }}
             ></div>
           </div>
         </div>
@@ -111,7 +115,9 @@ function Progress() {
           <div className="progress-bar">
             <div
               className="progress-fill hard-progress"
-              style={{ width: `${Math.min(progress.hard * 20, 100)}%` }}
+              style={{
+                width: `${Math.min(progress.hard * 20, 100)}%`,
+              }}
             ></div>
           </div>
         </div>
@@ -129,9 +135,10 @@ function Progress() {
 
               <div>
                 <strong>{item.title}</strong>
+
                 <p>
-                  {item.solved ? "Solved" : "Attempted"} • {item.difficulty} •{" "}
-                  {item.topic}
+                  {item.solved ? "Solved" : "Attempted"} •{" "}
+                  {item.difficulty} • {item.topic}
                 </p>
               </div>
 

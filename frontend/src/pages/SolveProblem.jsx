@@ -33,12 +33,6 @@ function SolveProblem() {
       }
     }
 
-    progress.solved += 1;
-    progress.attempts += 1;
-    progress.easy += 1;
-
-    localStorage.setItem("dsaProgress", JSON.stringify(progress));
-
     const savedActivity = localStorage.getItem("dsaActivity");
 
     let activity = [];
@@ -50,6 +44,21 @@ function SolveProblem() {
         activity = [];
       }
     }
+
+    const alreadySolved = activity.some(
+      (item) => item.title === "Two Sum" && item.solved
+    );
+
+    if (alreadySolved) {
+      alert("You have already solved this problem! ✅");
+      return;
+    }
+
+    progress.solved += 1;
+    progress.attempts += 1;
+    progress.easy += 1;
+
+    localStorage.setItem("dsaProgress", JSON.stringify(progress));
 
     activity.unshift({
       title: "Two Sum",
@@ -78,8 +87,6 @@ function SolveProblem() {
       </div>
 
       <div className="solve-layout">
-
-        {/* Problem Section */}
 
         <div className="problem-description">
           <h2>Problem Statement</h2>
@@ -113,8 +120,6 @@ function SolveProblem() {
             <li>-10⁹ ≤ target ≤ 10⁹</li>
           </ul>
         </div>
-
-        {/* Code Section */}
 
         <div className="code-section">
           <div className="code-header">
