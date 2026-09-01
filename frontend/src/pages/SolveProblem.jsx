@@ -1,135 +1,26 @@
 import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 function SolveProblem() {
-  const [searchParams] = useSearchParams();
+  const location = useLocation();
 
-  const problemId = searchParams.get("problem") || "two-sum";
-
-  const problems = {
-    "two-sum": {
-      title: "Two Sum",
-      topic: "Array",
-      difficulty: "Easy",
-      functionCode: `function twoSum(nums, target) {
-  // Write your solution here
-
-}`,
-      statement:
-        "Given an array of integers and a target value, return the indices of the two numbers that add up to the target.",
-      input: "nums = [2, 7, 11, 15], target = 9",
-      output: "[0, 1]",
-      explanation: "nums[0] + nums[1] = 9",
-      constraints: [
-        "2 ≤ nums.length ≤ 10⁴",
-        "-10⁹ ≤ nums[i] ≤ 10⁹",
-        "-10⁹ ≤ target ≤ 10⁹",
-      ],
-    },
-
-    "valid-parentheses": {
-      title: "Valid Parentheses",
-      topic: "Stack",
-      difficulty: "Easy",
-      functionCode: `function isValid(s) {
-  // Write your solution here
-
-}`,
-      statement:
-        "Given a string containing brackets, determine whether the brackets are correctly matched and properly nested.",
-      input: 's = "({[]})"',
-      output: "true",
-      explanation: "Every opening bracket has a matching closing bracket.",
-      constraints: [
-        "1 ≤ s.length ≤ 10⁴",
-        "The string contains only brackets.",
-      ],
-    },
-
-    "binary-search": {
-      title: "Binary Search",
-      topic: "Searching",
-      difficulty: "Easy",
-      functionCode: `function search(nums, target) {
-  // Write your solution here
-
-}`,
-      statement:
-        "Given a sorted array and a target value, find the position of the target using binary search.",
-      input: "nums = [-1, 0, 3, 5, 9, 12], target = 9",
-      output: "4",
-      explanation: "The target value 9 is present at index 4.",
-      constraints: [
-        "1 ≤ nums.length ≤ 10⁴",
-        "The array is sorted in ascending order.",
-      ],
-    },
-
-    "reverse-linked-list": {
-      title: "Reverse Linked List",
-      topic: "Linked List",
-      difficulty: "Easy",
-      functionCode: `function reverseList(head) {
-  // Write your solution here
-
-}`,
-      statement:
-        "Given the head of a singly linked list, reverse the list and return the new head.",
-      input: "head = [1, 2, 3, 4, 5]",
-      output: "[5, 4, 3, 2, 1]",
-      explanation:
-        "The links between the nodes are reversed so that the last node becomes the first.",
-      constraints: [
-        "The number of nodes is between 1 and 5000.",
-        "-5000 ≤ Node.val ≤ 5000",
-      ],
-    },
-
-    "maximum-subarray": {
-      title: "Maximum Subarray",
-      topic: "Array",
-      difficulty: "Medium",
-      functionCode: `function maxSubArray(nums) {
-  // Write your solution here
-
-}`,
-      statement:
-        "Given an integer array, find the contiguous subarray with the largest sum and return that maximum sum.",
-      input: "nums = [-2, 1, -3, 4, -1, 2, 1, -5, 4]",
-      output: "6",
-      explanation:
-        "The subarray [4, -1, 2, 1] has the largest sum, which is 6.",
-      constraints: [
-        "1 ≤ nums.length ≤ 10⁵",
-        "-10⁴ ≤ nums[i] ≤ 10⁴",
-      ],
-    },
-
-    "longest-substring-without-repeating-characters": {
-      title: "Longest Substring Without Repeating Characters",
-      topic: "String",
-      difficulty: "Medium",
-      functionCode: `function lengthOfLongestSubstring(s) {
-  // Write your solution here
-
-}`,
-      statement:
-        "Given a string, find the length of the longest substring that does not contain repeating characters.",
-      input: 's = "abcabcbb"',
-      output: "3",
-      explanation:
-        'The longest substring without repeating characters is "abc", which has length 3.',
-      constraints: [
-        "0 ≤ s.length ≤ 5 × 10⁴",
-        "The string may contain letters, digits, symbols and spaces.",
-      ],
-    },
+  // Problem information
+  const problem = location.state?.problem || {
+    title: "Two Sum",
+    topic: "Array",
+    difficulty: "Easy",
+    description:
+      "Given an array of integers and a target value, return the indices of the two numbers that add up to the target.",
   };
 
-  const problem = problems[problemId] || problems["two-sum"];
-
   const [language, setLanguage] = useState("JavaScript");
-  const [code, setCode] = useState(problem.functionCode);
+
+  const [code, setCode] = useState(
+`function twoSum(nums, target) {
+  // Write your solution here
+
+}`
+  );
 
   const handleRun = () => {
     alert("Code execution is not available in this version.");
@@ -167,8 +58,11 @@ function SolveProblem() {
       }
     }
 
+    // Check whether this particular problem is already solved
     const alreadySolved = activity.some(
-      (item) => item.title === problem.title && item.solved
+      (item) =>
+        item.title === problem.title &&
+        item.solved === true
     );
 
     if (alreadySolved) {
@@ -176,6 +70,7 @@ function SolveProblem() {
       return;
     }
 
+    // Update overall progress
     progress.solved += 1;
     progress.attempts += 1;
 
@@ -183,27 +78,30 @@ function SolveProblem() {
       progress.easy += 1;
     } else if (problem.difficulty === "Medium") {
       progress.medium += 1;
-    } else {
+    } else if (problem.difficulty === "Hard") {
       progress.hard += 1;
     }
 
-    localStorage.setItem("dsaProgress", JSON.stringify(progress));
+    localStorage.setItem(
+      "dsaProgress",
+      JSON.stringify(progress)
+    );
 
+    // Add activity
     activity.unshift({
       title: problem.title,
       difficulty: problem.difficulty,
       topic: problem.topic,
       solved: true,
-      date: "Today",
+      date: new Date().toISOString(),
     });
 
-    localStorage.setItem("dsaActivity", JSON.stringify(activity));
-
-    alert(
-      problemId === "maximum-subarray"
-        ? "Daily Challenge completed! 🎉"
-        : "Problem marked as solved! 🎉"
+    localStorage.setItem(
+      "dsaActivity",
+      JSON.stringify(activity)
     );
+
+    alert("Problem marked as solved! 🎉");
   };
 
   return (
@@ -225,33 +123,34 @@ function SolveProblem() {
       </div>
 
       <div className="solve-layout">
+
         <div className="problem-description">
           <h2>Problem Statement</h2>
 
-          <p>{problem.statement}</p>
+          <p>{problem.description}</p>
 
           <h3>Example</h3>
 
           <div className="example-box">
             <p>
-              <strong>Input:</strong> {problem.input}
+              <strong>Input:</strong> nums = [2, 7, 11, 15], target = 9
             </p>
 
             <p>
-              <strong>Output:</strong> {problem.output}
+              <strong>Output:</strong> [0, 1]
             </p>
 
             <p>
-              <strong>Explanation:</strong> {problem.explanation}
+              <strong>Explanation:</strong> nums[0] + nums[1] = 9
             </p>
           </div>
 
           <h3>Constraints</h3>
 
           <ul>
-            {problem.constraints.map((constraint, index) => (
-              <li key={index}>{constraint}</li>
-            ))}
+            <li>2 ≤ nums.length ≤ 10⁴</li>
+            <li>-10⁹ ≤ nums[i] ≤ 10⁹</li>
+            <li>-10⁹ ≤ target ≤ 10⁹</li>
           </ul>
         </div>
 
@@ -276,15 +175,22 @@ function SolveProblem() {
           />
 
           <div className="code-actions">
-            <button className="run-btn" onClick={handleRun}>
+            <button
+              className="run-btn"
+              onClick={handleRun}
+            >
               ▶ Run Code
             </button>
 
-            <button className="submit-btn" onClick={handleSubmit}>
+            <button
+              className="submit-btn"
+              onClick={handleSubmit}
+            >
               ✓ Mark as Solved
             </button>
           </div>
         </div>
+
       </div>
     </div>
   );

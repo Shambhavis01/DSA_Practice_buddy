@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
 
 function ProblemCard({ title, topic, difficulty, description }) {
-  const problemId = title.toLowerCase().replace(/\s+/g, "-");
-
   return (
     <div className="problem-card">
       <div className="problem-info">
@@ -20,7 +18,15 @@ function ProblemCard({ title, topic, difficulty, description }) {
       </div>
 
       <Link
-        to={`/solve?problem=${problemId}`}
+        to="/solve"
+        state={{
+          problem: {
+            title,
+            topic,
+            difficulty,
+            description,
+          },
+        }}
         className="solve-btn"
       >
         Solve →
