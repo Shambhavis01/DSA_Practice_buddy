@@ -28,15 +28,18 @@ function AIMentor() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://localhost:5000/api/mentor", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          message: userMessage,
-        }),
-      });
+      const response = await fetch(
+        "https://dsa-practice-buddy.onrender.com/api/mentor",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            message: userMessage,
+          }),
+        }
+      );
 
       const data = await response.json();
 
@@ -52,7 +55,7 @@ function AIMentor() {
         },
       ]);
     } catch (error) {
-      console.error(error);
+      console.error("AI Mentor Error:", error);
 
       setMessages((prev) => [
         ...prev,
